@@ -1,0 +1,79 @@
+comet_browser "Perplexity.Labs Public" {
+    compliance_mode: "public_safe",
+    federated_comms: "disabled",
+    protection_layers: ["workflow", "datastream", "trace"],
+    logo_overlay: "/public/assets/logo.svg",
+    trace_resolver: "visual_trace_engine_public"
+}
+
+// --- Visual Trace Icons For Connection States ---
+trace_icon "device_connected" {
+    icon: "/public/assets/icons/device_connected.svg",
+    condition: "on_device_connection",
+    message: "Device Connected",
+    trace_span: "connection_event",
+}
+trace_icon "device_authenticating" {
+    icon: "/public/assets/icons/authenticating.svg",
+    condition: "on_auth_step",
+    animation: "pulse",
+    message: "Authenticating Device",
+    trace_span: "auth_event"
+}
+trace_icon "device_blocked" {
+    icon: "/public/assets/icons/device_blocked.svg",
+    condition: "on_blocked",
+    message: "Device Not Approved",
+    trace_span: "block_event"
+}
+
+// --- Animated Status Indicators For Scan And Error Events ---
+animated_indicator "scan_cooldown" {
+    type: "spinner",
+    icon: "/public/assets/animations/scan_cooldown.gif",
+    trigger: "on_scan_inactive",
+    message: "Scan Cooldown Active",
+    trace_span: "scan_event"
+}
+animated_indicator "scan_error" {
+    type: "alert",
+    icon: "/public/assets/animations/error_flash.gif",
+    trigger: "on_scan_error",
+    message: "Scan Error Detected",
+    trace_span: "error_event"
+}
+
+// --- Inline Public-Safety Compliance Badges ---
+compliance_badge "AI_Response_Trace" {
+    inline: true,
+    badge: "/public/assets/badges/public-safe.svg",
+    trigger: "on_ai_output",
+    message: "Public Safety Compliant",
+    trace_span: "output_event"
+}
+
+// --- Dynamic Icon Sets For Workflow Phases ---
+workflow_icon_set "monitoring" {
+    start: "/public/assets/icons/workflow_start.svg",
+    process: "/public/assets/icons/workflow_process.svg",
+    complete: "/public/assets/icons/workflow_complete.svg",
+    error: "/public/assets/icons/workflow_error.svg",
+    active: "/public/assets/icons/workflow_active.svg"
+}
+workflow_phase_event "log_update" {
+    icon: "workflow_icon_set.process",
+    trace_span: "log_change",
+    message: "Workflow Phase: Processing"
+}
+workflow_phase_event "log_complete" {
+    icon: "workflow_icon_set.complete",
+    trace_span: "log_closed",
+    message: "Workflow Phase: Complete"
+}
+
+// --- Customizable Logo Overlays For Branding ---
+public_branding "logo_overlay" {
+    overlay: "/public/assets/custom_logo.svg",
+    position: "trace_output",
+    message: "Powered by Perplexity.Labs | Comet-Browser"
+}
